@@ -136,16 +136,6 @@ class DoubleQuad(Quad):
         X_u_prime_inputs = [ input for input in self.inputs.values() if input["group"]=="X_u_prime"]
         if len([input for input in X_u_prime_inputs if input['dist']=='empirical']) > 0: 
         
-        #     if os.path.exists('data_consistent_eigenvalues.npz'):
-        #         # X_inner_u_prime = np.load('data_consistent_eigenvalues.npz')
-
-        #         a = np.load('data_consistent_eigenvalues.npz')
-        #         b = a['arr_0']
-        #         N = self.get_N()
-        #         X_inner_u_prime = b[0:N,:]
-        #     else:
-        #         X_inner_u_prime = self.get_empirical_samples()
-
             X_inner_u_prime = self.DCI_eigenvalue_samples.copy()
 
             N = X_inner_u_prime.shape[0]

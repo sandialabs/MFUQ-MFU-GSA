@@ -68,16 +68,12 @@ class QuadADE(DoubleQuad):
         super().__init__(inputs, n_outer, n_inner)
 
     def instantiate_models(self):
-        # seed = 20230103
+
         N = 50000
-        # QoI: concentration at x=4, t=1.5
         self.f_model = FRADESobols()
-        # np.random.seed(seed)
-        # Rescaling so FRADE QoI variance is 1.
         scaling_factor = np.std(self.f_model.fX(self.f_model.get_input_samples(50000)))
         self.f_model.qoi_rescale_factor = scaling_factor
 
-        # np.random.seed(20230217)
         # Using the same scaling factor for the generalizedADE. Feeding it to ctor to ensure the FRADE
         # samples for the data-consistent update are also rescaled.
         self.g_model = generalizedADEDataConsistentSobols(std_scale=1.25, qoi_rescale_factor=scaling_factor,
@@ -85,18 +81,6 @@ class QuadADE(DoubleQuad):
 
         # Just sample the eigenvalues once, 
         self.DCI_eigenvalue_samples = self.g_model.get_input_samples(50000)[:,3:]
-
-    # def get_N(self):
-    #     N = 50000
-    #     return N
-
-    # def get_empirical_samples(self):
-    #     N = 50000
-    #     #samples=self.g_model.get_data_consistent_eigenvalue_samples(N)
-        
-    #     # Pulling off eigenvalue samples (also is sampling the model parameters).
-    #     samples=self.g_model.get_input_samples(N)[:,3:] 
-    #     return samples
 
     def f(self, X_input):
         Y = self.f_model.fX(X_input)
